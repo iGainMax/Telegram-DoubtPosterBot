@@ -4,6 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import random
 import re
+import os
 from keep_alive import keep_alive # Step 1: Import keep_alive
 
 # --- CONFIGURABLE SETTINGS ---
