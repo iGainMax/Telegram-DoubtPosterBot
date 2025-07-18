@@ -210,4 +210,4 @@ def handle_message(message):
 keep_alive()
 
 # Step 3: Start the bot
-bot.polling()
+bot.infinity_polling()
