@@ -4,6 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import random
 import re
+import os, json   # ✅ needed for environment variable
 from keep_alive import keep_alive # Step 1: Import keep_alive
 
 # --- CONFIGURABLE SETTINGS ---
@@ -19,7 +20,11 @@ scope = [
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
 ]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+
+# creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+
+creds_json = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_json, scope)
 client = gspread.authorize(creds)
 sheet = client.open("DoubtBotSheet").sheet1
 
