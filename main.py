@@ -8,7 +8,7 @@ import os, json   # ✅ needed for environment variable
 from keep_alive import keep_alive # Step 1: Import keep_alive
 
 # --- CONFIGURABLE SETTINGS ---
-BOT_TOKEN = "7159953831:AAGdJ9AOlfbz1eKgOdp85SXM4Wow_KpNbvo"
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 # Setup Telegram bot
 bot = telebot.TeleBot(BOT_TOKEN)
