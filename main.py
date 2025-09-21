@@ -5,7 +5,6 @@ from datetime import datetime
 import random
 import re
 import os, json   # ✅ needed for environment variable
-from keep_alive import keep_alive # Step 1: Import keep_alive
 
 # --- CONFIGURABLE SETTINGS ---
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
@@ -208,8 +207,6 @@ def handle_message(message):
     except Exception as e:
         print("❌ Error occurred:", e)
 
-# Step 2: Start the keep_alive webserver
-keep_alive()
+# Start the bot as a worker (infinite loop, restart if it crashes)
+bot.infinity_polling(timeout=60, long_polling_timeout=60)
 
-# Step 3: Start the bot
-bot.polling()
