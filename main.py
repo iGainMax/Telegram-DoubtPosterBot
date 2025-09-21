@@ -4,7 +4,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import random
 import re
-import os, json   # ✅ needed for environment variable
+import os, sys, threading, time, json   # ✅ keep everything here
+from keep_alive import keep_alive  # For Render uptime
 
 # --- CONFIGURABLE SETTINGS ---
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
@@ -207,6 +208,17 @@ def handle_message(message):
     except Exception as e:
         print("❌ Error occurred:", e)
 
-# Start the bot as a worker (infinite loop, restart if it crashes)
-bot.infinity_polling(timeout=60, long_polling_timeout=60)
+# Step 2: Start the keep_alive webserver
+keep_alive()
 
+# Step 3: Restart thread to auto-reload every hour
+def restart_bot():
+    while True:
+        time.sleep(3600)  # restart every 1 hour
+        print("♻️ Restarting bot process to keep it alive...")
+        os.execv(sys.executable, ['python'] + sys.argv)
+
+threading.Thread(target=restart_bot, daemon=True).start()
+
+# Step 4: Start the bot with stable polling
+bot.polling(none_stop=True, interval=0, timeout=20)
